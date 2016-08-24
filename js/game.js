@@ -1,27 +1,65 @@
 $(document).ready(function() {
 
-function Game() {
-  this.board =  "0000220000000000";
-}
+  function Game() {
+    this.board =  "0000220000000000";
+  }
 
-Game.prototype.createBoard = function() {
-  var split = this.board.split("").map(Number);
-  var shuffled = _.shuffle(split);
-  var nestedBoard = _.chunk(shuffled, 4);
-  return nestedBoard;
-};
+  Game.prototype.createBoard = function() {
+    var split = this.board.split("").map(Number);
+    var shuffled = _.shuffle(split);
+    var nestedBoard = _.chunk(shuffled, 4);
+    return nestedBoard;
+  };
 
-Game.prototype.printBoard = function() {
-  var nestedBoard = this.createBoard();
+  Game.prototype.printBoard = function(original) {
+    for(var i = 0; i < 4; i++) {
+      for(var j=0; j < 4; j++) {
+        var cell = $("#row-" + i + " .col-" + j).text(original[i][j]);
+      }
+    }
+  };
 
-  for(var i = 0; i < 4; i++) {
-    for(var j=0; j < 4; j++) {
-      var cell = $("#row-" + i + " .col-" + j).text(nestedBoard[i][j]);
+  Game.prototype.moveRight = function(board) {
+    var updated = []
+    for(var i in board) {
+        if (_.without(board[i], 0).length > 0) {
+          var cloned = _.clone(board[i]);
+          var compacted = _.compact(cloned);
+          var zeros = cloned.length - compacted.length;
+          for (var x = 0; x < zeros; x++) {
+            compacted.unshift(0);
+          }
+          updated.push(compacted);
+      } else {
+        updated.push(board[i])
+      }
+    }
+    return updated;
+  };
+
+
+
+  Game.prototype.displayUpdated = function(shifted) {
+    for(var i = 0; i < 4; i++) {
+      for(var j=0; j < 4; j++) {
+        var cell = $("#row-" + i + " .col-" + j).text(shifted[i][j]);
+      }
     }
   }
-}
-game = new Game();
-var board = game.createBoard();
-var nested = game.printBoard();
+
+  game = new Game();
+  var board = game.createBoard();
+  var nested = game.printBoard(board);
+
+  $(document).on('keyup', function(e){
+      e.preventDefault();
+      if(e.keyCode == 39) {
+        var shifted = game.moveRight(board);
+        game.displayUpdated(shifted);
+      }
+    })
+  // var right = game.moveRight(board);
+  // var update = game.displayUpdated(right);
+
 
 })
