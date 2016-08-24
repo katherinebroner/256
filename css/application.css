@@ -11,4 +11,6 @@ td {
   height: 125px;
   width: 125px;
   border: 1px solid black;
+  text-align: center;
+  font-size: 40px;
 }
