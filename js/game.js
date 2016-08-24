@@ -55,11 +55,24 @@ $(document).ready(function() {
     return updated;
   };
 
+  Game.prototype.insertNumber = function(board) {
+    var flattened = _.flatten(board);
+    for( i = 0; i < flattened.length; i++ ){
+      if (i === 0) {
+        flattened[i] = 2;
+        break;
+      }
+    }
+    var nested = _.chunk(flattened, 4);
+    return nested;
+  }
+
   Game.prototype.accessUpdated = function() {
     var newBoard = $("tbody").text().replace(/\s+/g, '');
     var split = newBoard.split("").map(Number);
     var updatedBoard = _.chunk(split, 4);
-    return updatedBoard;
+    var flattened = _.flatten(updatedBoard);
+    return flattened;
   }
 
   Game.prototype.displayUpdated = function(shifted) {
@@ -73,20 +86,23 @@ $(document).ready(function() {
   game = new Game();
   var board = game.createBoard();
   var nested = game.printBoard(board);
+  // var check = game.accessUpdated();
 
-  $(document).on('keyup', function(e){
-      e.preventDefault();
-      //right
-      if(e.keyCode == 39) {
-        var shifted = game.moveRight(board);
-        game.displayUpdated(shifted);
-        // left
-      } else if(e.keyCode == 37) {
-        var shifted = game.moveLeft(board);
-        game.displayUpdated(shifted);
-      }
-      var check = game.accessUpdated();
-      console.log(check);
+    $(document).on('keyup', function(e){
+        e.preventDefault();
+        //right
+        if(e.keyCode == 39) {
+          var shifted = game.moveRight(board);
+          game.displayUpdated(shifted);
+          var inserted = game.insertNumber(shifted);
+          game.displayUpdated(inserted);
+        } else if(e.keyCode == 37) {
+          var shifted = game.moveLeft(board);
+          game.displayUpdated(shifted);
+          var inserted = game.insertNumber(shifted);
+          game.displayUpdated(inserted);
+        }
+    var check = game.accessUpdated();
     })
 
 
