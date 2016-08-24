@@ -55,6 +55,12 @@ $(document).ready(function() {
     return updated;
   };
 
+  Game.prototype.accessUpdated = function() {
+    var newBoard = $("tbody").text().replace(/\s+/g, '');
+    var split = newBoard.split("").map(Number);
+    var updatedBoard = _.chunk(split, 4);
+    return updatedBoard;
+  }
 
   Game.prototype.displayUpdated = function(shifted) {
     for(var i = 0; i < 4; i++) {
@@ -79,7 +85,10 @@ $(document).ready(function() {
         var shifted = game.moveLeft(board);
         game.displayUpdated(shifted);
       }
+      var check = game.accessUpdated();
+      console.log(check);
     })
+
 
 
 })
