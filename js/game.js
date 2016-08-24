@@ -1,3 +1,5 @@
+$(document).ready(function() {
+
 function Game() {
   this.board =  "0000220000000000";
 }
@@ -9,6 +11,17 @@ Game.prototype.createBoard = function() {
   return nestedBoard;
 };
 
+Game.prototype.printBoard = function() {
+  var nestedBoard = this.createBoard();
+
+  for(var i = 0; i < 4; i++) {
+    for(var j=0; j < 4; j++) {
+      var cell = $("#row-" + i + " .col-" + j).text(nestedBoard[i][j]);
+    }
+  }
+}
 game = new Game();
 var board = game.createBoard();
-console.log(board);
+var nested = game.printBoard();
+
+})
