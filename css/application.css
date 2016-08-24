@@ -1,0 +1,14 @@
+h1 {
+  text-align: center;
+}
+
+.game-board {
+  border: solid 2px black;
+  margin: auto;
+}
+
+td {
+  height: 125px;
+  width: 125px;
+  border: 1px solid black;
+}
