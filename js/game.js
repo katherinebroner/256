@@ -31,22 +31,12 @@ $(document).ready(function() {
   }
 
   Game.prototype.moveLeft = function(board) {
-    var updated = []
-    for(var i in board) {
-        if (_.without(board[i], 0).length > 0) {
-          var cloned = _.clone(board[i]);
-          var compacted = _.compact(cloned);
-          var zeros = cloned.length - compacted.length;
-          for (var x = 0; x < zeros; x++) {
-            compacted.push(0);
-          }
-          updated.push(compacted);
-      } else {
-        updated.push(board[i])
-      }
-    }
-    return updated;
-  };
+    var right = this.moveRight(board);
+    var update = right.map(function(row) {
+      return row.reverse();
+    });
+    return update;
+  }
 
   Game.prototype.insertNumber = function(board) {
     var flattened = _.flatten(board);
