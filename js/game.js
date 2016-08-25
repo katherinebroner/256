@@ -20,22 +20,15 @@ $(document).ready(function() {
   };
 
   Game.prototype.moveRight = function(board) {
-    var updated = []
-    for(var i in board) {
-        if (_.without(board[i], 0).length > 0) {
-          var cloned = _.clone(board[i]);
-          var compacted = _.compact(cloned);
-          var zeros = cloned.length - compacted.length;
-          for (var x = 0; x < zeros; x++) {
-            compacted.unshift(0);
-          }
-          updated.push(compacted);
-      } else {
-        updated.push(board[i])
+    var update = board.map(function(row) {
+      var compacted = _.compact(row);
+      while(compacted.length < 4) {
+        compacted.unshift(0);
       }
-    }
-    return updated;
-  };
+      return compacted;
+    });
+    return update;
+  }
 
   Game.prototype.moveLeft = function(board) {
     var updated = []
@@ -94,13 +87,13 @@ $(document).ready(function() {
         if(e.keyCode == 39) {
           var shifted = game.moveRight(board);
           game.displayUpdated(shifted);
-          var inserted = game.insertNumber(shifted);
-          game.displayUpdated(inserted);
+          // var inserted = game.insertNumber(shifted);
+          // game.displayUpdated(inserted);
         } else if(e.keyCode == 37) {
           var shifted = game.moveLeft(board);
           game.displayUpdated(shifted);
-          var inserted = game.insertNumber(shifted);
-          game.displayUpdated(inserted);
+          // var inserted = game.insertNumber(shifted);
+          // game.displayUpdated(inserted);
         }
     var check = game.accessUpdated();
     })
