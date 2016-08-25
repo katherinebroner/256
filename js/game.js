@@ -38,6 +38,22 @@ $(document).ready(function() {
     return update;
   }
 
+  Game.prototype.moveUp = function(board) {
+    var zipped = _.unzip(board)
+    var up = this.moveLeft(zipped);
+    var update = _.unzip(up);
+    // var proper = this.moveLeft(update);
+    return update;
+  }
+
+  Game.prototype.moveDown = function(board) {
+    var zipped = _.unzip(board)
+    var up = this.moveRight(zipped);
+    var update = _.unzip(up);
+    // var proper = this.moveRight(update);
+    return update;
+  }
+
   Game.prototype.insertNumber = function(board) {
     var flattened = _.flatten(board);
     for( i = 0; i < flattened.length; i++ ){
@@ -54,8 +70,7 @@ $(document).ready(function() {
     var newBoard = $("tbody").text().replace(/\s+/g, '');
     var split = newBoard.split("").map(Number);
     var updatedBoard = _.chunk(split, 4);
-    var flattened = _.flatten(updatedBoard);
-    return flattened;
+    return updatedBoard;
   }
 
   Game.prototype.displayUpdated = function(shifted) {
@@ -69,23 +84,27 @@ $(document).ready(function() {
   game = new Game();
   var board = game.createBoard();
   var nested = game.printBoard(board);
-  // var check = game.accessUpdated();
 
     $(document).on('keyup', function(e){
         e.preventDefault();
-        //right
+        var check = game.accessUpdated();
         if(e.keyCode == 39) {
-          var shifted = game.moveRight(board);
+          var shifted = game.moveRight(check);
           game.displayUpdated(shifted);
           // var inserted = game.insertNumber(shifted);
           // game.displayUpdated(inserted);
         } else if(e.keyCode == 37) {
-          var shifted = game.moveLeft(board);
+          var shifted = game.moveLeft(check);
           game.displayUpdated(shifted);
           // var inserted = game.insertNumber(shifted);
           // game.displayUpdated(inserted);
+        } else if(e.keyCode == 38) {
+          var shifted = game.moveUp(check);
+          game.displayUpdated(shifted);
+        } else if(e.keyCode == 40) {
+          var shifted = game.moveDown(check);
+          game.displayUpdated(shifted);
         }
-    var check = game.accessUpdated();
     })
 
 
