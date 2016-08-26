@@ -42,7 +42,6 @@ $(document).ready(function() {
     var zipped = _.unzip(board)
     var up = this.moveLeft(zipped);
     var update = _.unzip(up);
-    // var proper = this.moveLeft(update);
     return update;
   }
 
@@ -50,7 +49,6 @@ $(document).ready(function() {
     var zipped = _.unzip(board)
     var up = this.moveRight(zipped);
     var update = _.unzip(up);
-    // var proper = this.moveRight(update);
     return update;
   }
 
@@ -73,14 +71,6 @@ $(document).ready(function() {
     return updatedBoard;
   }
 
-  Game.prototype.displayUpdated = function(shifted) {
-    for(var i = 0; i < 4; i++) {
-      for(var j=0; j < 4; j++) {
-        var cell = $("#row-" + i + " .col-" + j).text(shifted[i][j]);
-      }
-    }
-  }
-
   game = new Game();
   var board = game.createBoard();
   var nested = game.printBoard(board);
@@ -90,20 +80,20 @@ $(document).ready(function() {
         var check = game.accessUpdated();
         if(e.keyCode == 39) {
           var shifted = game.moveRight(check);
-          game.displayUpdated(shifted);
+          game.printBoard(shifted);
           // var inserted = game.insertNumber(shifted);
-          // game.displayUpdated(inserted);
+          // game.printBoard(inserted);
         } else if(e.keyCode == 37) {
           var shifted = game.moveLeft(check);
-          game.displayUpdated(shifted);
+          game.printBoard(shifted);
           // var inserted = game.insertNumber(shifted);
-          // game.displayUpdated(inserted);
+          // game.printBoard(inserted);
         } else if(e.keyCode == 38) {
           var shifted = game.moveUp(check);
-          game.displayUpdated(shifted);
+          game.printBoard(shifted);
         } else if(e.keyCode == 40) {
           var shifted = game.moveDown(check);
-          game.displayUpdated(shifted);
+          game.printBoard(shifted);
         }
     })
 
