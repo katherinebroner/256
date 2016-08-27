@@ -19,6 +19,19 @@ $(document).ready(function() {
     }
   };
 
+  Game.prototype.accessUpdated = function() {
+    var board = [];
+    for(var i = 0; i < 4; i++) {
+      for(var j = 0; j < 4; j++) {
+        var cell = $("#row-" + i + " .col-" + j).text();
+        board.push(cell);
+      }
+    }
+    var toNum = board.map(Number);
+    var nested = _.chunk(toNum, 4);
+    return nested;
+  };
+
   Game.prototype.moveRight = function(board) {
     var update = board.map(function(row) {
       var compacted = _.compact(row);
@@ -42,7 +55,6 @@ $(document).ready(function() {
     var zipped = _.unzip(board)
     var up = this.moveLeft(zipped);
     var update = _.unzip(up);
-    // var proper = this.moveLeft(update);
     return update;
   }
 
@@ -50,7 +62,6 @@ $(document).ready(function() {
     var zipped = _.unzip(board)
     var up = this.moveRight(zipped);
     var update = _.unzip(up);
-    // var proper = this.moveRight(update);
     return update;
   }
 
@@ -66,20 +77,6 @@ $(document).ready(function() {
     return nested;
   }
 
-  Game.prototype.accessUpdated = function() {
-    var newBoard = $("tbody").text().replace(/\s+/g, '');
-    var split = newBoard.split("").map(Number);
-    var updatedBoard = _.chunk(split, 4);
-    return updatedBoard;
-  }
-
-  Game.prototype.displayUpdated = function(shifted) {
-    for(var i = 0; i < 4; i++) {
-      for(var j=0; j < 4; j++) {
-        var cell = $("#row-" + i + " .col-" + j).text(shifted[i][j]);
-      }
-    }
-  }
 
   game = new Game();
   var board = game.createBoard();
@@ -90,20 +87,20 @@ $(document).ready(function() {
         var check = game.accessUpdated();
         if(e.keyCode == 39) {
           var shifted = game.moveRight(check);
-          game.displayUpdated(shifted);
+          game.printBoard(shifted);
           // var inserted = game.insertNumber(shifted);
-          // game.displayUpdated(inserted);
+          // game.printBoard(inserted);
         } else if(e.keyCode == 37) {
           var shifted = game.moveLeft(check);
-          game.displayUpdated(shifted);
+          game.printBoard(shifted);
           // var inserted = game.insertNumber(shifted);
-          // game.displayUpdated(inserted);
+          // game.printBoard(inserted);
         } else if(e.keyCode == 38) {
           var shifted = game.moveUp(check);
-          game.displayUpdated(shifted);
+          game.printBoard(shifted);
         } else if(e.keyCode == 40) {
           var shifted = game.moveDown(check);
-          game.displayUpdated(shifted);
+          game.printBoard(shifted);
         }
     })
 
