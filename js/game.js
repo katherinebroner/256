@@ -19,6 +19,19 @@ $(document).ready(function() {
     }
   };
 
+  Game.prototype.accessUpdated = function() {
+    var board = [];
+    for(var i = 0; i < 4; i++) {
+      for(var j = 0; j < 4; j++) {
+        var cell = $("#row-" + i + " .col-" + j).text();
+        board.push(cell);
+      }
+    }
+    var toNum = board.map(Number);
+    var nested = _.chunk(toNum, 4);
+    return nested;
+  };
+
   Game.prototype.moveRight = function(board) {
     var update = board.map(function(row) {
       var compacted = _.compact(row);
@@ -64,12 +77,6 @@ $(document).ready(function() {
     return nested;
   }
 
-  Game.prototype.accessUpdated = function() {
-    var newBoard = $("tbody").text().replace(/\s+/g, '');
-    var split = newBoard.split("").map(Number);
-    var updatedBoard = _.chunk(split, 4);
-    return updatedBoard;
-  }
 
   game = new Game();
   var board = game.createBoard();
